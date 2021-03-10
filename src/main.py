@@ -27,7 +27,7 @@ from contact_scraper import parse_vcard_from_html
 
 
 def fetch_contact_page(password):
-    """ Accesses
+    """ Gets the HTML of the Jet City Improv fortress contact page.
 
     Arguments:
         password {[string]} -- Password to enter Fortress. Be careful: NEVER hardcode or log this value.
@@ -36,7 +36,7 @@ def fetch_contact_page(password):
     contact_info_url = "www.jetcityimprov.org/fortress/phone-numbers-and-emails/"
     postpass_host = "www.jetcityimprov.org/wp-login.php?action=postpass"
     host = "www.jetcityimprov.org"
-    body = { "body": { "post_password": getpass.getpass(), "Submit": "Enter" }}
+    body = { "body": { "post_password": password, "Submit": "Enter" }}
     response_html = ""
 
     ssl_context = ssl.create_default_context() # To make sure we're connecting securely
@@ -69,6 +69,7 @@ def save_contacts(vcard, output_path, output_filename):
 
 
 if __name__ == "__main__":
-    html_doc = fetch_contact_page("")
+    password = getpass.getpass("Please enter the Jet City Improv Fortress password: ")
+    html_doc = fetch_contact_page(password)
     vcard = parse_vcard_from_html(html_doc)
     save_contacts(vcard, ".", "my_friends")
